@@ -1,10 +1,10 @@
 local wezterm = require 'wezterm'
 return {
-	-- color_scheme = 'termnial.sexy',
 	color_scheme = 'Catppuccin Mocha',
 	enable_tab_bar = false,
 	font_size = 16.0,
 	font = wezterm.font('MesloLGM Nerd Font'),
+	enable_wayland = true,
 	
 	window_background_opacity = 1.0,
 	window_decorations = 'RESIZE',
