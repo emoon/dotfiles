@@ -6,6 +6,9 @@ palette = "catppuccin_mocha"
 right_format = """$all"""
 command_timeout = 1000
 
+[rust]
+format = 'via [⚙️ $version](red bold)'
+
 [git_branch]
 format =  '[$symbol$branch(:$remote_branch)]($style)'
 
