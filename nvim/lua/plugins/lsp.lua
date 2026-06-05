@@ -75,12 +75,22 @@ return {
 
           -- Jump to the definition of the word under your cursor.
           --  This is where a variable was first declared, or where a function is defined, etc.
-          --  To jump back, press <C-t>.
-          map('<F12>', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
+          --  push_tagstack_on_edit records the pre-jump position on the tag
+          --  stack so Shift-F12 (or <C-t>) walks back through the jumps.
+          map('<F12>', function()
+            require('telescope.builtin').lsp_definitions({ push_tagstack_on_edit = true })
+          end, '[G]oto [D]efinition')
 
-          -- WARN: This is not Goto Definition, this is Goto Declaration.
-          --  For example, in C this would take you to the header.
-          map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+          -- Jump back to where you were before the last <F12>. Pops the tag
+          -- stack (same as the built-in <C-t>), so repeated presses unwind
+          -- the whole jump history.
+          map('<S-F12>', '<C-t>', 'Jump back from [D]efinition')
+
+          -- The Hazama server advertises no declarationProvider, so
+          -- vim.lsp.buf.declaration falls through to Vim's keyword search
+          -- (it lands on the `import` line instead of the definition).
+          -- Map gD to definition so it does the useful thing.
+          map('gD', vim.lsp.buf.definition, '[G]oto [D]efinition')
 
           -- Fuzzy find all the symbols in your current document.
           --  Symbols are things like variables, functions, types, etc.
